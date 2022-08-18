@@ -52,6 +52,7 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
 
 endif()
 
+include_directories(cryptoTools/thirdparty)
 
 if(DEFINED LIBOTE_CPP_VER)
     message("warning: setting LIBOTE_STD_VER as LIBOTE_CPP_VER=${LIBOTE_CPP_VER}")
