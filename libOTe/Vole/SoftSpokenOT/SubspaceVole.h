@@ -128,6 +128,8 @@ namespace osuCrypto
 		span<block> extendMessages(u64 blocks)
 		{
 			u64 currentEnd = mMessages.size();
+			if (mMessages.capacity() < currentEnd + blocks)
+			    mMessages.reserve(2 * currentEnd);
 			mMessages.resize(currentEnd + blocks);
 			return mMessages.subspan(currentEnd);
 		}
