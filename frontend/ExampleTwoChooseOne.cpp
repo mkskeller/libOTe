@@ -10,6 +10,8 @@
 
 #include "libOTe/TwoChooseOne/Silent/SilentOtExtReceiver.h"
 #include "libOTe/TwoChooseOne/Silent/SilentOtExtSender.h"
+#include "libOTe/TwoChooseOne/SoftSpokenOT/SoftSpokenShOtExt.h"
+#include "libOTe/TwoChooseOne/SoftSpokenOT/SoftSpokenMalOtExt.h"
 #include "util.h"
 #include "coproto/Socket/AsioSocket.h"
 #include "cryptoTools/Common/BitVector.h"
