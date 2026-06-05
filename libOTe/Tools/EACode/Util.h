@@ -121,15 +121,20 @@ namespace osuCrypto
                 return libdivide::libdivide_u64_do_vec256(x, divider);
             }
 #else
-            using block256 = std::array<block, 2>;
+            using block256 = std::array<u64, 4>;
 
-            static inline block256 _mm256_loadu_si256(block256* p) { return *p; }
+            static inline block256 _mm256_loadu_si256(void* p)
+            {
+                block256 res;
+                memcpy(res.data(), p, 32);
+                return res;
+            }
 
             static inline block256 my_libdivide_u64_do_vec256(const block256& x, const libdivide::libdivide_u64_t* divider)
             {
                 block256 y;
-                auto x64 = (u64*)&x;
-                auto y64 = (u64*)&y;
+                auto& x64 = x;
+                auto& y64 = y;
                 for (u64 i = 0; i < 4; ++i)
                 {
                     y64[i] = libdivide::libdivide_u64_do(x64[i], divider);
