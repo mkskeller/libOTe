@@ -108,7 +108,7 @@ namespace osuCrypto
 			VecF& output,
 			PprfOutputFormat oFormat,
 			bool programPuncturedPoint,
-			u64 numThreads,
+			u64,
 			CoeffCtx ctx = {})
 		{
 			MACORO_TRY{
@@ -710,7 +710,7 @@ namespace osuCrypto
 			VecF& output,
 			PprfOutputFormat oFormat,
 			bool programPuncturedPoint,
-			u64 numThreads,
+			u64,
 			CoeffCtx ctx = {})
 		{
 			MACORO_TRY{

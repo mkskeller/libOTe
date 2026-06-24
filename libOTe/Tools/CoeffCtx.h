@@ -239,7 +239,7 @@ namespace osuCrypto {
         // attibute. If this does not make sense for your Vec<F>::iterator,
         // just return the iterator.
         template<typename F, typename Iter>
-        F* __restrict restrictPtr(Iter iter)
+        F* restrictPtr(Iter iter)
         {
             return &*iter;
         }

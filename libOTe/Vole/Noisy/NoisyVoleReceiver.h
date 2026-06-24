@@ -72,7 +72,7 @@ namespace osuCrypto {
 		//  a = b + c * delta
 		//
 		template<typename VecG, typename VecF>
-		task<> receive(VecG& c, VecF& a, PRNG& _,
+		task<> receive(VecG& c, VecF& a, PRNG&,
 			span<std::array<block, 2>> otMsg,
 			Socket& chl, CoeffCtx ctx)
 		{

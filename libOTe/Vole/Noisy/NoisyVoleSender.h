@@ -79,7 +79,7 @@ namespace osuCrypto {
 		//  a = b + c * delta
 		//
 		template<typename FVec>
-		task<> send(F delta, FVec& b, PRNG& _,
+		task<> send(F delta, FVec& b, PRNG&,
 			span<block> otMsg, Socket& chl, CoeffCtx ctx)
 		{
 			MACORO_TRY{
