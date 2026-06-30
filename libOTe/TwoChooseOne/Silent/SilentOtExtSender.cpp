@@ -101,8 +101,6 @@ namespace osuCrypto
 
 		// If we have IKNP base OTs, use them
 		// to extend to get the silent base OTs.
-#if defined(ENABLE_SOFTSPOKEN_OT) && defined(LIBOTE_HAS_BASE_OT)
-
 #ifdef ENABLE_SOFTSPOKEN_OT
 		if (useOtExtension)
 		{
@@ -112,6 +110,7 @@ namespace osuCrypto
 		}
 		else
 #endif
+#ifdef LIBOTE_HAS_BASE_OT
 		{
 			auto base = DefaultBaseOT{};
 			// otherwise just generate the silent 

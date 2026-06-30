@@ -159,8 +159,6 @@ namespace osuCrypto
 		// If we have soft spoken ot base OTs, use them
 		// to extend to get the silent base OTs.
 
-#if defined(ENABLE_SOFTSPOKEN_OT) && defined(LIBOTE_HAS_BASE_OT)
-
 #ifdef ENABLE_SOFTSPOKEN_OT
 		if (useOtExtension)
 		{
@@ -171,6 +169,7 @@ namespace osuCrypto
 		}
 		else
 #endif
+#ifdef LIBOTE_HAS_BASE_OT
 		{
 			auto base = DefaultBaseOT{};
 
@@ -179,7 +178,6 @@ namespace osuCrypto
 			co_await(base.receive(choice, msg, prng, chl));
 			setTimePoint("recver.gen.baseOT");
 		}
-
 #else
 		throw std::runtime_error("soft spoken ot or base OTs must be enabled");
 #endif
