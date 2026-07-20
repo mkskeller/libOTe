@@ -248,7 +248,7 @@ namespace osuCrypto
             u64 pntCount)
         {
             if (oFormat == PprfOutputFormat::Interleaved && pntCount % 8)
-                throw std::runtime_error("For Interleaved output format, pointCount must be a multiple of 8 (general case not impl). " LOCATION);
+                throw osuCrypto::maybe_runtime_error("For Interleaved output format, pointCount must be a multiple of 8 (general case not impl). " LOCATION);
 
 
             switch (oFormat)

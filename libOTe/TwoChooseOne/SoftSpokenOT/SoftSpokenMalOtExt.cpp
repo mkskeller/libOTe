@@ -15,10 +15,10 @@ namespace osuCrypto
 	{
 		MACORO_TRY{
 		if ((u64)messages.data() % 32)
-			throw std::runtime_error("soft spoken requires the messages to by 32 byte aligned. Consider using AlignedUnVector or AlignedVector." LOCATION);
+			throw osuCrypto::maybe_runtime_error("soft spoken requires the messages to by 32 byte aligned. Consider using AlignedUnVector or AlignedVector." LOCATION);
 
 		if (messages.size() == 0)
-			throw std::runtime_error("soft spoken must be called with at least 1 messag." LOCATION);
+			throw osuCrypto::maybe_runtime_error("soft spoken must be called with at least 1 messag." LOCATION);
 
 		auto nChunks = u64{};
 		auto messagesFullChunks = u64{};
@@ -294,7 +294,7 @@ namespace osuCrypto
 		MACORO_TRY{
 
 		if ((u64)messages.data() % 32)
-			throw std::runtime_error("soft spoken requires the messages to by 32 byte aligned. Consider using AlignedUnVector or AlignedVector." LOCATION);
+			throw osuCrypto::maybe_runtime_error("soft spoken requires the messages to by 32 byte aligned. Consider using AlignedUnVector or AlignedVector." LOCATION);
 
 		auto nChunks = u64{};
 		auto messagesFullChunks = u64{};

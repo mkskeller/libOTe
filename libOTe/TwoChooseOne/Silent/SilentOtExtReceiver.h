@@ -437,14 +437,14 @@ namespace osuCrypto
 		// Helper function to access the PPRF generator
 		PprfReceiver<block, CoeffCtxGF2>& gen() {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> PprfReceiver<block, CoeffCtxGF2>&{ return v; }, mGenVar);
 		}
 
 		// Const version of the PPRF generator accessor
 		const PprfReceiver<block, CoeffCtxGF2>& gen() const {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> const PprfReceiver<block, CoeffCtxGF2>&{ return v; }, mGenVar);
 		}
 

@@ -115,7 +115,7 @@ void LogVole_Civole_RejectsZeroDelta(const oc::CLP&)
     {
         macoro::sync_wait(civoleSenderOffline(senderInput, senderState, prng, sockets[0]));
     }
-    catch (const std::runtime_error&)
+    catch (const osuCrypto::maybe_runtime_error&)
     {
         threw = true;
     }
@@ -146,7 +146,7 @@ void LogVole_Civole_ValidationAndSidReuse(const oc::CLP&)
         oc::PRNG receiverPrng(oc::block(77, 88));
         macoro::sync_wait(civoleReceiverSetX(receiverState, 900, invalidX, receiverSetX, receiverPrng, invalidSockets[1]));
     }
-    catch (const std::runtime_error&)
+    catch (const osuCrypto::maybe_runtime_error&)
     {
         invalidXThrew = true;
     }
@@ -170,7 +170,7 @@ void LogVole_Civole_ValidationAndSidReuse(const oc::CLP&)
         oc::PRNG senderPrng(oc::block(99, 100));
         macoro::sync_wait(civoleSenderRelease(senderState, sid, releaseAgain, senderPrng, senderSockets[0]));
     }
-    catch (const std::runtime_error&)
+    catch (const osuCrypto::maybe_runtime_error&)
     {
         senderThrew = true;
     }
@@ -185,7 +185,7 @@ void LogVole_Civole_ValidationAndSidReuse(const oc::CLP&)
         oc::PRNG receiverPrng(oc::block(101, 102));
         macoro::sync_wait(civoleReceiverSetX(receiverState, sid, x2, setXAgain, receiverPrng, receiverSockets[1]));
     }
-    catch (const std::runtime_error&)
+    catch (const osuCrypto::maybe_runtime_error&)
     {
         receiverThrew = true;
     }

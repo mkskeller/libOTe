@@ -410,7 +410,7 @@ namespace osuCrypto
          */
         PprfSender<block, CoeffCtxGF2>& gen() {
             if (isConfigured() == false)
-                throw std::runtime_error("configure(...) must be called first.");
+                throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
             return std::visit([](auto& v) -> PprfSender<block, CoeffCtxGF2>&{ return v; }, mGenVar);
         }
 
@@ -421,7 +421,7 @@ namespace osuCrypto
          */
         const PprfSender<block, CoeffCtxGF2>& gen() const {
             if (isConfigured() == false)
-                throw std::runtime_error("configure(...) must be called first.");
+                throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
             return std::visit([](auto& v) -> const PprfSender<block, CoeffCtxGF2>&{ return v; }, mGenVar);
         }
 

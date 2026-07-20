@@ -15,10 +15,10 @@ namespace osuCrypto
 		const BitVector& choices)
 	{
 		if (choices.size() != u64(baseRecvOts.size()))
-			throw std::runtime_error("size mismatch");
+			throw osuCrypto::maybe_runtime_error("size mismatch");
 
 		if (choices.size() != u64(mGens.size()))
-			throw std::runtime_error("only multiples of 128 are supported");
+			throw osuCrypto::maybe_runtime_error("only multiples of 128 are supported");
 
 
 		mBaseChoiceBits = choices;
@@ -248,8 +248,8 @@ namespace osuCrypto
 		u64 inputBitCount)
 	{
 
-		if (maliciousSecure) throw std::runtime_error(LOCATION);
-		if (inputBitCount > 128) throw std::runtime_error(LOCATION);
+		if (maliciousSecure) throw osuCrypto::maybe_runtime_error(LOCATION);
+		if (inputBitCount > 128) throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		mInputByteCount = (inputBitCount + 7) / 8;
 		mGens.resize(128 * 4);
@@ -260,7 +260,7 @@ namespace osuCrypto
 		if (mGens.size())
 			return mGens.size();
 		else
-			throw std::runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
+			throw osuCrypto::maybe_runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
 	}
 
 	task<> KkrtNcoOtSender::recvCorrection(Socket& chl, u64 recvCount)
@@ -268,7 +268,7 @@ namespace osuCrypto
 		MACORO_TRY{
 #ifndef NDEBUG
 		if (recvCount > mCorrectionVals.bounds()[0] - mCorrectionIdx)
-			throw std::runtime_error("bad receiver, will overwrite the end of our buffer" LOCATION);
+			throw osuCrypto::maybe_runtime_error("bad receiver, will overwrite the end of our buffer" LOCATION);
 #endif // !NDEBUG
 
 		// receive the next OT correction values. This will be several rows of the form u = T0 + T1 + C(w)

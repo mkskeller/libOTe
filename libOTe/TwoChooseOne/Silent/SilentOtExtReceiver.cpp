@@ -30,7 +30,7 @@ namespace osuCrypto
 			mOtExtRecver.emplace();
 		mOtExtRecver->setBaseOts(baseSendOts);
 #else
-		throw std::runtime_error("softSpoken ot must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softSpoken ot must be enabled. " LOCATION);
 #endif
 	}
 
@@ -44,7 +44,7 @@ namespace osuCrypto
 		}
 		return  mOtExtRecver->baseOtCount();
 #else
-		throw std::runtime_error("softSpoken ot must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softSpoken ot must be enabled. " LOCATION);
 #endif
 	}
 
@@ -55,7 +55,7 @@ namespace osuCrypto
 			return false;
 		return mOtExtRecver->hasBaseOts();
 #else
-		throw std::runtime_error("softSpoken ot must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softSpoken ot must be enabled. " LOCATION);
 #endif
 	};
 
@@ -67,14 +67,14 @@ namespace osuCrypto
 		const BitVector& baseC)
 	{
 		if (isConfigured() == false)
-			throw std::runtime_error("configure(...) must be called first.");
+			throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 
 		// Validate input sizes
 		if (static_cast<u64>(recvBaseOts.size()) != baseCount().mBaseOtCount)
-			throw std::runtime_error("wrong number of silent base OTs");
+			throw osuCrypto::maybe_runtime_error("wrong number of silent base OTs");
 
 		if (baseA.size() != baseCount().mBaseVoleCount || baseC.size() != baseCount().mBaseVoleCount)
-			throw std::runtime_error("wrong number of silent base VOLEs");
+			throw osuCrypto::maybe_runtime_error("wrong number of silent base VOLEs");
 
 		// Split base OTs into PPRF OTs and malicious check OTs
 		auto genOts = recvBaseOts.subspan(0, gen().baseOtCount());
@@ -109,7 +109,7 @@ namespace osuCrypto
 			mOtExtRecver.emplace();
 		co_await mOtExtRecver->genBaseOts(prng, chl);
 #else
-		throw std::runtime_error("softSpoken ot must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softSpoken ot must be enabled. " LOCATION);
 		co_return;
 #endif
 	}
@@ -125,7 +125,7 @@ namespace osuCrypto
 		ptr->mOtExtRecver = mOtExtRecver->splitBase();
 		return ret;
 #else
-		throw std::runtime_error("softSpoken ot must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softSpoken ot must be enabled. " LOCATION);
 #endif
 	};
 
@@ -142,7 +142,7 @@ namespace osuCrypto
 	// Samples the choice bits for base OTs
 	BitVector SilentOtExtReceiver::sampleBaseChoiceBits(PRNG& prng) {
 		if (isConfigured() == false)
-			throw std::runtime_error("configure(...) must be called first");
+			throw osuCrypto::maybe_runtime_error("configure(...) must be called first");
 
 		// Get choice bits for PPRF base OTs
 		if (gen().hasBaseOts() == false)
@@ -160,7 +160,7 @@ namespace osuCrypto
 		MACORO_TRY{
 
 		if (isConfigured() == false)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 		// Determine how many base OTs and base VOLEs we need
 		auto count = baseCount();
@@ -232,7 +232,7 @@ namespace osuCrypto
 			setTimePoint("recver.gen.baseOT");
 		}
 #else
-		throw std::runtime_error("soft spoken ot or base OTs must be enabled");
+		throw osuCrypto::maybe_runtime_error("soft spoken ot or base OTs must be enabled");
 #endif
 		// Set the generated base correlations
 		setBaseCors(msg, choice, baseA, baseC);
@@ -248,7 +248,7 @@ namespace osuCrypto
 	SilentBaseCount SilentOtExtReceiver::baseCount() const
 	{
 		if (isConfigured() == false)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 		return
 		{
@@ -744,7 +744,7 @@ namespace osuCrypto
 				code.init2(mRequestNumOts, mNoiseVecSize, mCodeSeed);
 				code.dualEncode(mA);
 #else
-				throw std::runtime_error("ENABLE_BITPOLYMUL not defined.");
+				throw osuCrypto::maybe_runtime_error("ENABLE_BITPOLYMUL not defined.");
 #endif
 			}
 			break;
@@ -829,7 +829,7 @@ namespace osuCrypto
 				code.dualEncode(mA);
 				code.dualEncode(mC);
 #else
-				throw std::runtime_error("ENABLE_BITPOLYMUL not defined.");
+				throw osuCrypto::maybe_runtime_error("ENABLE_BITPOLYMUL not defined.");
 #endif
 			}
 			break;

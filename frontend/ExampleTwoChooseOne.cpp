@@ -31,7 +31,7 @@ namespace osuCrypto
 	template<typename Sender, typename Receiver>
 	void noHash(Sender&, Receiver&)
 	{
-		throw std::runtime_error("This protocol does not support noHash");
+		throw osuCrypto::maybe_runtime_error("This protocol does not support noHash");
 	}
 
 #ifdef ENABLE_SOFTSPOKEN_OT

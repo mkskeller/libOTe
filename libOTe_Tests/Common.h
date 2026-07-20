@@ -45,7 +45,7 @@ namespace tests_libOTe
 
         if (throws)
         {
-            throw std::runtime_error("threw an exception: P0:\n" + party0 + "\n\nP1:\n" + party1);
+            throw osuCrypto::maybe_runtime_error("threw an exception: P0:\n" + party0 + "\n\nP1:\n" + party1);
         }
     }
 

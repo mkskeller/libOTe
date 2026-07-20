@@ -50,7 +50,7 @@ namespace osuCrypto
                 codeSize = 2 * messageSize;
 
             if (accumulatorSize % 8)
-                throw std::runtime_error("ExConvCode accumulator size must be a multiple of 8." LOCATION);
+                throw osuCrypto::maybe_runtime_error("ExConvCode accumulator size must be a multiple of 8." LOCATION);
 
             mSeed = seed;
             mMessageSize = messageSize;

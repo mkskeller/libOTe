@@ -32,7 +32,7 @@ namespace osuCrypto
 
 		mOtExtSender->setBaseOts(baseRecvOts, choices);
 #else
-		throw std::runtime_error("softspoken must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softspoken must be enabled. " LOCATION);
 #endif
 	}
 
@@ -47,7 +47,7 @@ namespace osuCrypto
 		ptr->mOtExtSender = mOtExtSender->splitBase();
 		return ret;
 #else
-		throw std::runtime_error("softspoken must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softspoken must be enabled. " LOCATION);
 #endif
 	}
 
@@ -59,7 +59,7 @@ namespace osuCrypto
 			mOtExtSender.emplace();
 		return mOtExtSender->genBaseOts(prng, chl);
 #else
-		throw std::runtime_error("softspoken must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softspoken must be enabled. " LOCATION);
 #endif
 	}
 
@@ -74,7 +74,7 @@ namespace osuCrypto
 		}
 		return mOtExtSender->baseOtCount();
 #else
-		throw std::runtime_error("softspoken must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softspoken must be enabled. " LOCATION);
 #endif
 	}
 
@@ -86,7 +86,7 @@ namespace osuCrypto
 			return false;
 		return mOtExtSender->hasBaseOts();
 #else
-		throw std::runtime_error("softspoken must be enabled. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("softspoken must be enabled. " LOCATION);
 #endif
 	}
 
@@ -108,7 +108,7 @@ namespace osuCrypto
 		auto baseB = AlignedUnVector<block>(count.mBaseVoleCount);
 		
 		if (isConfigured() == false)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 #if defined(ENABLE_SOFTSPOKEN_OT) && defined(LIBOTE_HAS_BASE_OT)
 
@@ -135,7 +135,7 @@ namespace osuCrypto
 			// Check if the existing delta matches what we need
 			// This is critical for stationary noise which requires consistent delta values
 			if (mOtExtSender->mBase.mSubVole.mVole.mDelta != choice && count.mBaseVoleCount)
-				throw std::runtime_error("genBaseCors does not implement the logic to generate the BaseCors for a different delta value. Caller must do this manually. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("genBaseCors does not implement the logic to generate the BaseCors for a different delta value. Caller must do this manually. " LOCATION);
 
 			// Use OT extension to generate the base OTs
 			co_await mOtExtSender->send(msg, prng, chl);
@@ -177,7 +177,7 @@ namespace osuCrypto
 			setTimePoint("sender.gen.baseOT");
 		}
 #else
-		throw std::runtime_error("KOS or base OTs must be enabled");
+		throw osuCrypto::maybe_runtime_error("KOS or base OTs must be enabled");
 #endif
 
 		// Set the generated base correlations
@@ -195,7 +195,7 @@ namespace osuCrypto
 	SilentBaseCount SilentOtExtSender::baseCount() const
 	{
 		if (isConfigured() == false)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 		// Get number of base OTs needed for the PPRF
 		auto n = gen().baseOtCount();
@@ -488,7 +488,7 @@ namespace osuCrypto
 			// For stationary noise, delta must be consistent
 			if (d.has_value() && d != mDelta)
 			{
-				throw std::runtime_error("SilentOtExtSender: delta must match the same value that was used in"
+				throw osuCrypto::maybe_runtime_error("SilentOtExtSender: delta must match the same value that was used in"
 					"setup when using stationary. It is possible to change delta but requires"
 					"computing a new base VOLE correlation and setting the base correlations. "
 					LOCATION);
@@ -614,7 +614,7 @@ namespace osuCrypto
 			code.init2(mRequestNumOts, mNoiseVecSize, mCodeSeed);
 			code.dualEncode(mB.subspan(0, code.size()));
 #else
-			throw std::runtime_error("ENABLE_BITPOLYMUL");
+			throw osuCrypto::maybe_runtime_error("ENABLE_BITPOLYMUL");
 #endif
 		}
 		break;

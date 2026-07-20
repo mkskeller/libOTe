@@ -67,9 +67,9 @@ namespace osuCrypto
 		void configure(u64 domainSize, u64 pointCount) override
 		{
 			if (domainSize & 1)
-				throw std::runtime_error("Pprf domain must be even. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Pprf domain must be even. " LOCATION);
 			if (domainSize < 2)
-				throw std::runtime_error("Pprf domain must must be at least 2. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Pprf domain must must be at least 2. " LOCATION);
 
 			mDomain = domainSize;
 			mDepth = log2ceil(mDomain);
@@ -563,9 +563,9 @@ namespace osuCrypto
 		void configure(u64 domainSize, u64 pointCount) override
 		{
 			if (domainSize & 1)
-				throw std::runtime_error("Pprf domain must be even. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Pprf domain must be even. " LOCATION);
 			if (domainSize < 2)
-				throw std::runtime_error("Pprf domain must must be at least 2. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Pprf domain must must be at least 2. " LOCATION);
 
 			mDomain = domainSize;
 			mDepth = log2ceil(mDomain);
@@ -617,7 +617,7 @@ namespace osuCrypto
 				}
 
 				if (idx >= mDomain)
-					throw std::runtime_error("provided choice bits index outside of the domain." LOCATION);
+					throw osuCrypto::maybe_runtime_error("provided choice bits index outside of the domain." LOCATION);
 			}
 		}
 

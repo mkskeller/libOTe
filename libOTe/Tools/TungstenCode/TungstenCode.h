@@ -60,11 +60,11 @@ namespace osuCrypto {
 				auto dst = output + (*(u32 * __restrict)mPermIter * chunkSize);
 				++mPermIter;
 				//if ((u64)output % std::hardware_destructive_interference_size != 0)
-				//    throw std::runtime_error(LOCATION);
+				//    throw osuCrypto::maybe_runtime_error(LOCATION);
 				//if((u64)dst % std::hardware_destructive_interference_size != 0)
-				//    throw std::runtime_error(LOCATION);
+				//    throw osuCrypto::maybe_runtime_error(LOCATION);
 				//if((u64)x % std::hardware_destructive_interference_size != 0)
-				//    throw std::runtime_error(LOCATION);
+				//    throw osuCrypto::maybe_runtime_error(LOCATION);
 				//__assume((u64)x % std::hardware_destructive_interference_size == 0);
 				//__assume((u64)dst % std::hardware_destructive_interference_size == 0);
 				ctx.copy(x, x + chunkSize, dst);
@@ -143,9 +143,9 @@ namespace osuCrypto {
 			void config(u64 messageSize, u64 codeSize, block seed = block(452345234, 6756754363))
 			{
 				if (messageSize % ChunkSize)
-					throw std::runtime_error("messageSize " + std::to_string(messageSize) + " must be a multiple of ChunkSize " + std::to_string(ChunkSize) + ". " LOCATION);
+					throw osuCrypto::maybe_runtime_error("messageSize " + std::to_string(messageSize) + " must be a multiple of ChunkSize " + std::to_string(ChunkSize) + ". " LOCATION);
 				if (codeSize % ChunkSize)
-					throw std::runtime_error("codeSize must be a multiple of ChunkSize. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("codeSize must be a multiple of ChunkSize. " LOCATION);
 
 				mMessageSize = messageSize;
 				mCodeSize = codeSize;

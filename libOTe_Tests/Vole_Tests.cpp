@@ -404,7 +404,7 @@ void Vole_Silent_Rounds_test(const oc::CLP& cmd)
 				if (rounds != expRound)
 				{
 					std::cout << baseName << std::endl;
-					throw std::runtime_error("act " + std::to_string(rounds) + "!= exp " + std::to_string(expRound) + " " + COPROTO_LOCATION);
+					throw osuCrypto::maybe_runtime_error("act " + std::to_string(rounds) + "!= exp " + std::to_string(expRound) + " " + COPROTO_LOCATION);
 				}
 
 

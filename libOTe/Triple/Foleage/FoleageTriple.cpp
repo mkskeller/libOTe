@@ -115,7 +115,7 @@ namespace osuCrypto
 	{
 		if (isInitialized() == false)
 		{
-			throw std::runtime_error("init must be called first. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("init must be called first. " LOCATION);
 		}
 		auto baseCount = baseOtCount();
 
@@ -159,7 +159,7 @@ namespace osuCrypto
 				choice = BitVector(choice.data(), choice.size() - extSenderCount, extSenderCount);
 				setBaseOts(sendMsg, span<block>(recvMsg).subspan(extSenderCount), choice);
 #else
-				throw std::runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken. " LOCATION);
 #endif
 			}
 			else
@@ -181,7 +181,7 @@ namespace osuCrypto
 
 				setBaseOts(sendMsg, recvMsg, choice);
 #else
-				throw std::runtime_error("A base OT must be enabled. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("A base OT must be enabled. " LOCATION);
 #endif
 			}
 		}
@@ -222,7 +222,7 @@ namespace osuCrypto
 
 				setBaseOts(span<std::array<block, 2>>(sendMsg).subspan(extRecverCount), recvMsg, choice);
 #else
-				throw std::runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken. " LOCATION);
 #endif
 			}
 			else
@@ -245,7 +245,7 @@ namespace osuCrypto
 
 				setBaseOts(sendMsg, recvMsg, choice);
 #else
-				throw std::runtime_error("A base OT must be enabled. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("A base OT must be enabled. " LOCATION);
 #endif
 			}
 

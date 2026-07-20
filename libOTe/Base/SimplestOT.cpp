@@ -63,7 +63,7 @@ namespace osuCrypto
 			ro.Final(comm2);
 
 			if (comm != comm2)
-				throw std::runtime_error("bad decommitment " LOCATION);
+				throw osuCrypto::maybe_runtime_error("bad decommitment " LOCATION);
 		}
 
 		Curve{};

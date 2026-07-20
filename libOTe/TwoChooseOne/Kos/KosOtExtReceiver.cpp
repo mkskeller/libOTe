@@ -31,7 +31,7 @@ namespace osuCrypto
 	{
 
 		if (baseOTs.size() != gOtExtBaseOtCount)
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		std::array<std::vector<block>, 2> keys;
 		keys[0].resize(gOtExtBaseOtCount);
@@ -54,7 +54,7 @@ namespace osuCrypto
 		std::array<std::array<block, 2>, gOtExtBaseOtCount>baseRecvOts;
 
 		if (!hasBaseOts())
-			throw std::runtime_error("base OTs have not been set. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("base OTs have not been set. " LOCATION);
 
 		for (u64 i = 0; i < mGens.size(); ++i)
 		{
@@ -80,7 +80,7 @@ namespace osuCrypto
 		MACORO_TRY{
 
 		if (mIsMalicious && mHashType == HashType::NoHash)
-			throw std::runtime_error("malicious no hash is not supported, use DotKos. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("malicious no hash is not supported, use DotKos. " LOCATION);
 
 		// we are going to process OTs in blocks of 128 * superBlkSize messages.
 		if (hasBaseOts() == false)

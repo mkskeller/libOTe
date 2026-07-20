@@ -367,13 +367,13 @@ namespace osuCrypto {
 
 		// make sure that the output can hold the input.
 		if (static_cast<int>(out.stride()) < (bitWidth + 7) / 8)
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		// we can handle the case that the output should be truncated, but
 		// not the case that the input is too small. (simple call this function
 		// with a smaller out.bounds()[0], since thats "free" to do.)
 		if (out.bounds()[0] > in.stride() * 8)
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		union TempObj
 		{

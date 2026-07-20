@@ -43,7 +43,7 @@ namespace osuCrypto
         if (in.is_open() == false)
         {
             std::cout << "failed to open:\n     " << fileName << std::endl;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         loadTxtFile(in);
@@ -76,14 +76,14 @@ namespace osuCrypto
 
 #ifndef NDEBUG
             if (line.size() != 2 * numCols - 1)
-                throw std::runtime_error("");
+                throw osuCrypto::maybe_runtime_error("");
 #endif
             for (u64 j = 0; j < numCols; ++j)
             {
 
 #ifndef NDEBUG
                 if (line[j * 2] - '0' > 1)
-                    throw std::runtime_error("");
+                    throw osuCrypto::maybe_runtime_error("");
 #endif
                 buff[j] = line[j * 2] - '0';;
             }
@@ -129,7 +129,7 @@ namespace osuCrypto
             }
 
             if (iter.mByte > (u8*)(mG.data() + mG.size()))
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             out << *iter << "\n";
         }
@@ -144,7 +144,7 @@ namespace osuCrypto
         if (in.is_open() == false)
         {
             std::cout << "failed to open:\n     " << fileName << std::endl;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         loadBinFile(in);
@@ -161,7 +161,7 @@ namespace osuCrypto
         if (mCodewordBitSize == 0)
         {
             std::cout << "bad code " << std::endl;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         mG.resize(size);
@@ -235,7 +235,7 @@ namespace osuCrypto
             std::cout << "The encode function assumes that the plaintext word"
                 " size is less than " << sLinearCodePlainTextMaxSize << ". If"
                 " this is not the case, raise the limit" << std::endl;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         auto singleRowCount = plaintextBitSize();
@@ -319,7 +319,7 @@ namespace osuCrypto
 #ifndef NDEBUG
         if (static_cast<u64>(plaintxt.size()) != plaintextBlkSize() ||
             static_cast<u64>(codeword.size()) < codewordBlkSize())
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 #endif
 
         //span<u8> pp((u8*)plaintxt.data(), plaintextU8Size(), false);
@@ -354,7 +354,7 @@ namespace osuCrypto
         //                block* g0 = mG8.data() + k + byteView[i] * codeSize;
         //                block* g1 = mG8.data() + k + byteView[i + 1] * codeSize + rowSize;
         //#ifndef NDEBUG
-        //                if (g1 >= mG8.data() + mG8.size())throw std::runtime_error("");
+        //                if (g1 >= mG8.data() + mG8.size())throw osuCrypto::maybe_runtime_error("");
         //#endif
         //                c[0] = c[0] ^ g0[0];
         //                c[1] = c[1] ^ g0[1];
@@ -395,7 +395,7 @@ namespace osuCrypto
         //                    block* g6 = mG8.data() + j + byteView[i + 6] * codeSize + rowSize * 6;
         //                    block* g7 = mG8.data() + j + byteView[i + 7] * codeSize + rowSize * 7;
         //#ifndef NDEBUG
-        //                    if (g7 >= mG8.data() + mG8.size())throw std::runtime_error("");
+        //                    if (g7 >= mG8.data() + mG8.size())throw osuCrypto::maybe_runtime_error("");
         //#endif
         //
         //                    c[0] = c[0] ^ *g0;
@@ -428,7 +428,7 @@ namespace osuCrypto
 #ifndef NDEBUG
         if (static_cast<u64>(plaintxt.size()) != plaintextU8Size() ||
             static_cast<u64>(codeword.size()) < codewordU8Size())
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 #endif
         encode(plaintxt.data(), codeword.data());
     }

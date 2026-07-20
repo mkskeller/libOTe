@@ -14,7 +14,7 @@ namespace osuCrypto
 		if (mGens.size())
 			return mGens.size();
 		else
-			throw std::runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
+			throw osuCrypto::maybe_runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
 	}
 
 	task<> OosNcoOtSender::setBaseOts(
@@ -33,10 +33,10 @@ namespace osuCrypto
 	void OosNcoOtSender::setUniformBaseOts(span<block> baseRecvOts, const BitVector& uniformChoices)
 	{
 		if (uniformChoices.size() != u64(baseRecvOts.size()))
-			throw std::runtime_error("size mismatch");
+			throw osuCrypto::maybe_runtime_error("size mismatch");
 
 		if (uniformChoices.size() % (sizeof(block) * 8) != 0)
-			throw std::runtime_error("only multiples of 128 are supported");
+			throw osuCrypto::maybe_runtime_error("only multiples of 128 are supported");
 
 		mBaseChoiceBits = uniformChoices;
 		mGens.resize(uniformChoices.size());
@@ -88,7 +88,7 @@ namespace osuCrypto
 	{
 		MACORO_TRY{
 		if (mInputByteCount == 0)
-			throw std::runtime_error("configure must be called first" LOCATION);
+			throw osuCrypto::maybe_runtime_error("configure must be called first" LOCATION);
 
 		if (hasBaseOts() == false)
 			co_await genBaseOts(prng, chl);
@@ -188,7 +188,7 @@ namespace osuCrypto
 
 #ifndef NDEBUG
 		if (mInputByteCount == 0)
-			throw std::runtime_error("configure must be called first" LOCATION);
+			throw osuCrypto::maybe_runtime_error("configure must be called first" LOCATION);
 #endif // !NDEBUG
 
 		// compute the codeword. We assume the
@@ -260,7 +260,7 @@ namespace osuCrypto
 			//mCode.loadTxtFile("C:/Users/peter/repo/libOTe/libOTe/Tools/bch511.txt");
 		}
 		else
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 
 
@@ -276,7 +276,7 @@ namespace osuCrypto
 
  #ifndef NDEBUG
 		 if (recvCount > mCorrectionVals.bounds()[0] - mCorrectionIdx)
-			 throw std::runtime_error("bad receiver, will overwrite the end of our buffer" LOCATION);
+			 throw osuCrypto::maybe_runtime_error("bad receiver, will overwrite the end of our buffer" LOCATION);
 
  #endif // !NDEBUG
 
@@ -301,7 +301,7 @@ namespace osuCrypto
 		if (mMalicious)
 		{
 			if (mStatSecParam % 8)
-				throw std::runtime_error("Must be a multiple of 8. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Must be a multiple of 8. " LOCATION);
 
 			// first we need to receive the extra mStatSecParam number of correction
 			// values. This will just be for random inputs and are used to mask
@@ -381,12 +381,12 @@ namespace osuCrypto
 		{
 			if (neq(mGens[i].getSeed(), baseOTs[i][mBaseChoiceBits[i]]))
 			{
-				throw std::runtime_error(LOCATION);
+				throw osuCrypto::maybe_runtime_error(LOCATION);
 			}
 
 			if (mGens[i].mBlockIdx != mBlockIdxs[i])
 			{
-				throw std::runtime_error(LOCATION);
+				throw osuCrypto::maybe_runtime_error(LOCATION);
 			}
 		}
 
@@ -411,7 +411,7 @@ namespace osuCrypto
 		memset(zeroAndQ.data(), 0, zeroAndQ.size() * 2 * sizeof(block));
 
 		// make sure that having this allocated on the stack is ok.
-		if (codeSize < zeroAndQ.size()) throw std::runtime_error("Make this bigger. " LOCATION);
+		if (codeSize < zeroAndQ.size()) throw osuCrypto::maybe_runtime_error("Make this bigger. " LOCATION);
 
 
 		// this will hold out random x^(l)_i values that we compute from the seed.
@@ -506,7 +506,7 @@ namespace osuCrypto
 								"w = " << mW_DEBUG[kk][0] << " ->  " << cw[0] << std::endl <<
 								"diff " << (tq ^ cb) << std::endl;
 
-							throw std::runtime_error(LOCATION);
+							throw osuCrypto::maybe_runtime_error(LOCATION);
 						}
 						//std::cout << "tq " << tq << " cb " << cb << " = c(" << mW_DEBUG[kk][0] << "} & " << mChoiceBlks[j] << " diff " << (tq ^ cb) << std::endl;
 					}
@@ -573,7 +573,7 @@ namespace osuCrypto
 
 						if (neq(tq, cb))
 						{
-							throw std::runtime_error(LOCATION);
+							throw osuCrypto::maybe_runtime_error(LOCATION);
 						}
 					}
 #endif
@@ -638,7 +638,7 @@ namespace osuCrypto
 
 				if (neq(tq, cb))
 				{
-					throw std::runtime_error("bad OOS16 OT check. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("bad OOS16 OT check. " LOCATION);
 				}
 			}
 		}

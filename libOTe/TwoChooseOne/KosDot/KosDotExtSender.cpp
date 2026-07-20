@@ -224,7 +224,7 @@ namespace osuCrypto
 		setTimePoint("KosDot.send.cncSeed");
 
 		if (Commit(theirSeed) != theirSeedComm)
-			throw std::runtime_error("bad commit " LOCATION);
+			throw osuCrypto::maybe_runtime_error("bad commit " LOCATION);
 
 
 		{
@@ -312,7 +312,7 @@ namespace osuCrypto
 				std::cout << "exp t[2] = " << t3 << std::endl;
 				std::cout << "exp t[3] = " << t4 << std::endl << std::endl;
 				std::cout << "q  = " << q[0] << std::endl;
-				throw std::runtime_error("Exit");;
+				throw osuCrypto::maybe_runtime_error("Exit");;
 			}
 
 			setTimePoint("KosDot.send.done");

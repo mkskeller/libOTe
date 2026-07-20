@@ -24,7 +24,7 @@ namespace osuCrypto
 	KosOtExtSender KosOtExtSender::splitBase()
 	{
 		if (!hasBaseOts())
-			throw std::runtime_error("base OTs have not been set. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("base OTs have not been set. " LOCATION);
 
 		std::array<block, gOtExtBaseOtCount> baseRecvOts;
 		for (u64 i = 0; i < mGens.mAESs.size(); ++i)
@@ -42,7 +42,7 @@ namespace osuCrypto
 	void KosOtExtSender::setBaseOts(span<block> baseRecvOts, const BitVector& choices)
 	{
 		if (baseRecvOts.size() != gOtExtBaseOtCount || choices.size() != gOtExtBaseOtCount)
-			throw std::runtime_error("not supported/implemented");
+			throw osuCrypto::maybe_runtime_error("not supported/implemented");
 
 		mBaseChoiceBits = choices;
 		mGens.setKeys(baseRecvOts);
@@ -59,7 +59,7 @@ namespace osuCrypto
 
 
 		if (mIsMalicious && mHashType == HashType::NoHash)
-			throw std::runtime_error("malicious no hash is not supported, use DotKos. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("malicious no hash is not supported, use DotKos. " LOCATION);
 
 
 		if (hasBaseOts() == false)
@@ -339,7 +339,7 @@ namespace osuCrypto
 			if (tt != received_t)
 			{
 				//std::cout << "OT Ext Failed Correlation check failed" << std::endl;
-				throw std::runtime_error("KOS, bad mal check " LOCATION);
+				throw osuCrypto::maybe_runtime_error("KOS, bad mal check " LOCATION);
 			}
 		}
 		setTimePoint("Kos.send.proofDone");

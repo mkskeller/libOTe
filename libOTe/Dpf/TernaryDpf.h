@@ -131,11 +131,11 @@ namespace osuCrypto
 				for (u64 j = 0; j < mDepth; ++j)
 				{
 					if ((v & 3) == 3)
-						throw std::runtime_error("TernaryDpf: invalid point sharing. Expects the input points to be shared over Z_3^D where each Z_3 elements takes up 2 bits of a the value. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("TernaryDpf: invalid point sharing. Expects the input points to be shared over Z_3^D where each Z_3 elements takes up 2 bits of a the value. " LOCATION);
 					v >>= 2;
 				}
 				if (v)
-					throw std::runtime_error("TernaryDpf: invalid point sharing. point is larger than 3^D " LOCATION);
+					throw osuCrypto::maybe_runtime_error("TernaryDpf: invalid point sharing. point is larger than 3^D " LOCATION);
 			}
 
 			u64 numPoints8 = mNumPoints / 8 * 8;
@@ -154,7 +154,7 @@ namespace osuCrypto
 					auto ret = MatrixView<T>((T*)allocIter, rows, cols);
 					allocIter += sizeof(T) * ret.size();
 					if (allocIter > allocation.data() + allocSize)
-						throw std::runtime_error("TernaryDpf: allocation error. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("TernaryDpf: allocation error. " LOCATION);
 					return ret;
 				};
 

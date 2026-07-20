@@ -37,7 +37,7 @@ namespace osuCrypto
 		MACORO_TRY{
 #ifdef ENABLE_SSE
 		if ((u64)messages.data() % 32)
-			throw std::runtime_error("SoftSpokenShOtSender: messages must point to 32 byte aligned memory. " + macoro::trace(co_await macoro::get_trace()).str());
+			throw osuCrypto::maybe_runtime_error("SoftSpokenShOtSender: messages must point to 32 byte aligned memory. " + macoro::trace(co_await macoro::get_trace()).str());
 #endif
 		auto numInstances = u64{};
 		auto numChunks = u64{};
@@ -184,7 +184,7 @@ namespace osuCrypto
 		MACORO_TRY{
 #ifdef ENABLE_SSE
 		if ((u64)messages.data() % 32)
-			throw std::runtime_error("SoftSpokenShOtReceiver: messages must point to 32 byte aligned memory. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("SoftSpokenShOtReceiver: messages must point to 32 byte aligned memory. " LOCATION);
 #endif
 		auto numInstances = u64{};
 		auto numChunks = u64{};

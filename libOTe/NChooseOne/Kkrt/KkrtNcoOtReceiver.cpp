@@ -15,10 +15,10 @@ namespace osuCrypto
 	{
 
 		if (baseRecvOts.size() % 128 != 0)
-			throw std::runtime_error("rt error at " LOCATION);
+			throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
 		if (u64(baseRecvOts.size()) != u64(mGens.size()))
-			throw std::runtime_error("rt error at " LOCATION);
+			throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
 
 		//mGens.resize(baseRecvOts.size());
@@ -154,7 +154,7 @@ namespace osuCrypto
 		if (mGens.size())
 			return mGens.size();
 		else
-			throw std::runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
+			throw osuCrypto::maybe_runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
 	}
 
 	KkrtNcoOtReceiver KkrtNcoOtReceiver::splitBase()
@@ -196,16 +196,16 @@ namespace osuCrypto
 		static const int width(4);
 #ifndef NDEBUG
 		if (mT0.stride() != width)
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		//if (choice.size() != mT0.stride())
 		//    throw std::invalid_argument("");
 
 		if (eq(mT0[otIdx][0], ZeroBlock))
-			throw std::runtime_error("uninitialized OT extension");
+			throw osuCrypto::maybe_runtime_error("uninitialized OT extension");
 
 		if (eq(mT0[otIdx][0], AllOneBlock))
-			throw std::runtime_error("This otIdx has already been encoded");
+			throw osuCrypto::maybe_runtime_error("This otIdx has already been encoded");
 #endif // !NDEBUG
 
 		block* t0Val = mT0.data() + mT0.stride() * otIdx;
@@ -262,10 +262,10 @@ namespace osuCrypto
 	{
 #ifndef NDEBUG
 		if (eq(mT0[otIdx][0], ZeroBlock))
-			throw std::runtime_error("uninitialized OT extension");
+			throw osuCrypto::maybe_runtime_error("uninitialized OT extension");
 
 		if (eq(mT0[otIdx][0], AllOneBlock))
-			throw std::runtime_error("This otIdx has already been encoded");
+			throw osuCrypto::maybe_runtime_error("This otIdx has already been encoded");
 #endif // !NDEBUG
 
 		block* t0Val = mT0.data() + mT0.stride() * otIdx;
@@ -293,8 +293,8 @@ namespace osuCrypto
 		u64 statSecParam,
 		u64 inputBitCount)
 	{
-		if (maliciousSecure) throw std::runtime_error(LOCATION);
-		if (inputBitCount > 128) throw std::runtime_error("currently only support up to 128 bit KKRT inputs. Can be extended on request" LOCATION);
+		if (maliciousSecure) throw osuCrypto::maybe_runtime_error(LOCATION);
+		if (inputBitCount > 128) throw osuCrypto::maybe_runtime_error("currently only support up to 128 bit KKRT inputs. Can be extended on request" LOCATION);
 
 		mInputByteCount = (inputBitCount + 7) / 8;
 		auto count = 128 * 4;
@@ -324,7 +324,7 @@ namespace osuCrypto
 		// make sure these OTs all contain valid correction values, aka encode has been called.
 		for (u64 i = mCorrectionIdx; i < mCorrectionIdx + sendCount; ++i)
 			if (neq(mT0[i][0], AllOneBlock))
-				throw std::runtime_error("This send request contains uninitialized OT. Call encode first...");
+				throw osuCrypto::maybe_runtime_error("This send request contains uninitialized OT. Call encode first...");
 #endif
 
 		static_assert(cp::has_size_member_func<T1Sub>::value, "size ");

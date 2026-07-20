@@ -55,7 +55,7 @@ namespace osuCrypto
 
 		co_await(sender->base.send(msgs, prng, chl));
 #else
-		throw std::runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
 #endif
 
 		co_await(setBaseOts(msgs, prng, chl));
@@ -110,7 +110,7 @@ namespace osuCrypto
 
 		co_await(recver->base.receive(bv, msgs, prng, chl));
 #else 
-		throw std::runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
 #endif
 
 		co_await(setBaseOts(msgs, bv, chl));
@@ -128,7 +128,7 @@ namespace osuCrypto
 		auto temp = Matrix<block>{};
 
 		if (hasBaseOts() == false)
-			throw std::runtime_error("call configure(...) and genBaseOts(...) first.");
+			throw osuCrypto::maybe_runtime_error("call configure(...) and genBaseOts(...) first.");
 
 		co_await(init(messages.rows(), prng, chl));
 
@@ -171,7 +171,7 @@ namespace osuCrypto
 		auto temp = Matrix<block>{};
 
 		if (hasBaseOts() == false)
-			throw std::runtime_error("call configure(...) and genBaseOts(...) first.");
+			throw osuCrypto::maybe_runtime_error("call configure(...) and genBaseOts(...) first.");
 
 		co_await(init(messages.size(), prng, chl));
 

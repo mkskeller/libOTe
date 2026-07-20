@@ -14,7 +14,7 @@ namespace osuCrypto
 		auto base = DefaultBaseOT{};
 		co_await genBaseOts(base, prng, chl);
 #else
-		throw std::runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
 		co_return;
 #endif
 	}
@@ -41,7 +41,7 @@ namespace osuCrypto
 		auto base = DefaultBaseOT{};
 		co_await genBaseOts(base, prng, chl);
 #else
-		throw std::runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
+		throw osuCrypto::maybe_runtime_error("The libOTe library does not have base OTs. Enable them to call this. " LOCATION);
 		co_return;
 #endif
 

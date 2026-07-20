@@ -96,12 +96,12 @@ namespace osuCrypto
 	//	CpChannel& operator=(CpChannel&&) = default;
 
 	//	CpChannel(Channel& c) : mImpl(new CpAsyncChannelSock(c)) {
-	//		throw std::runtime_error(LOCATION);
+	//		throw osuCrypto::maybe_runtime_error(LOCATION);
 	//		//static_cast<Socket&>(*this) = Socket(*mImpl);
 	//	}
 
 	//	CpChannel(Channel&& c) : mImpl(new CpAsyncChannelSock(c)) {
-	//		throw std::runtime_error(LOCATION);
+	//		throw osuCrypto::maybe_runtime_error(LOCATION);
 	//		//static_cast<Socket&>(*this) = Socket(*mImpl);
 	//	}
 

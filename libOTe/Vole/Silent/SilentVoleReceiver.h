@@ -348,7 +348,7 @@ namespace osuCrypto
 			if (mSecurityType == SilentSecType::SemiHonest)
 				throw RTE_LOC;
 			if constexpr (!MaliciousSupported)
-				throw std::runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
 
 			auto points = gen().getPoints(mPprfFormat);
 			if (mPprfFormat == PprfOutputFormat::ByTreeIndex)
@@ -375,14 +375,14 @@ namespace osuCrypto
 		// Helper function to access the PPRF generator
 		PprfReceiver<F, Ctx>& gen() {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> PprfReceiver<F, Ctx>&{ return v; }, mGenVar);
 		}
 
 		// Const version of the PPRF generator accessor
 		const PprfReceiver<F, Ctx>& gen() const {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> const PprfReceiver<F, Ctx>&{ return v; }, mGenVar);
 		}
 
@@ -450,7 +450,7 @@ namespace osuCrypto
 #endif
 			setTimePoint("SilentVoleReceiver.genSilent.begin");
 			if (isConfigured() == false)
-				throw std::runtime_error("configure must be called first");
+				throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 			auto count = baseCount();
 			BitVector choiceBits;
@@ -540,7 +540,7 @@ namespace osuCrypto
 						co_await nv.receive(baseC, baseA, prng2, *mOtExtSender, chl2, mCtx);
 				}
 #else
-				throw std::runtime_error("soft spoken must be enabled");
+				throw osuCrypto::maybe_runtime_error("soft spoken must be enabled");
 #endif
 			}
 			else
@@ -569,7 +569,7 @@ namespace osuCrypto
 
 			setTimePoint("SilentVoleReceiver.genSilent.done");
 #else
-			throw std::runtime_error("LIBOTE_HAS_BASE_OT = false, must enable relic, sodium or simplest ot asm." LOCATION);
+			throw osuCrypto::maybe_runtime_error("LIBOTE_HAS_BASE_OT = false, must enable relic, sodium or simplest ot asm." LOCATION);
 			co_return;
 #endif
 
@@ -627,7 +627,7 @@ namespace osuCrypto
 		}
 		else
 		{
-			throw std::runtime_error("Unknown noise type. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("Unknown noise type. " LOCATION);
 		}
 
 		mState = State::Configured;
@@ -641,7 +641,7 @@ namespace osuCrypto
 	auto SilentVoleReceiver<F, G, Ctx>::sampleBaseChoiceBits(PRNG& prng) -> BitVector {
 
 		if (isConfigured() == false)
-			throw std::runtime_error("configure(...) must be called first");
+			throw osuCrypto::maybe_runtime_error("configure(...) must be called first");
 		if (baseCount().mBaseOtCount)
 			return gen().sampleChoiceBits(prng);
 		else
@@ -659,15 +659,15 @@ namespace osuCrypto
 	{
 		auto count = baseCount();
 		if (isConfigured() == false)
-			throw std::runtime_error("configure(...) must be called first.");
+			throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 
 		if (static_cast<u64>(recvBaseOts.size()) != count.mBaseOtCount)
-			throw std::runtime_error("wrong number of silent base OTs");
+			throw osuCrypto::maybe_runtime_error("wrong number of silent base OTs");
 
 		if (baseA.size() != count.mBaseVoleCount)
-			throw std::runtime_error("wrong number of silent base Vole values." LOCATION);
+			throw osuCrypto::maybe_runtime_error("wrong number of silent base Vole values." LOCATION);
 		if (baseC.size() != count.mBaseVoleCount)
-			throw std::runtime_error("wrong number of silent base Vole values." LOCATION);
+			throw osuCrypto::maybe_runtime_error("wrong number of silent base Vole values." LOCATION);
 
 		if (choice.size())
 		{
@@ -697,7 +697,7 @@ namespace osuCrypto
 
 			// Validate input sizes match
 			if (c.size() != a.size())
-				throw std::runtime_error("input sizes do not match." LOCATION);
+				throw osuCrypto::maybe_runtime_error("input sizes do not match." LOCATION);
 
 		// Run the main protocol
 		co_await silentReceiveInplace(c.size(), prng, chl);
@@ -835,13 +835,13 @@ namespace osuCrypto
 			if constexpr (MaliciousSupported)
 				myHash = ferretMalCheck();
 			else {
-				throw std::runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
 			}
 
 			// Receive and verify the sender's hash
 			co_await chl.recv(theirHash);
 			if (theirHash != myHash)
-				throw std::runtime_error("malicious security check failed. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("malicious security check failed. " LOCATION);
 		}
 
 
@@ -901,10 +901,10 @@ namespace osuCrypto
 			}
 			else
 			{
-				throw std::runtime_error("QuasiCyclic is only supported for GF128, i.e. block. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("QuasiCyclic is only supported for GF128, i.e. block. " LOCATION);
 			}
 #else
-			throw std::runtime_error("QuasiCyclic requires ENABLE_BITPOLYMUL = true. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("QuasiCyclic requires ENABLE_BITPOLYMUL = true. " LOCATION);
 #endif
 			break;
 		}
@@ -917,7 +917,7 @@ namespace osuCrypto
 			break;
 		}
 		default:
-			throw std::runtime_error("Code is not supported. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("Code is not supported. " LOCATION);
 			break;
 		}
 

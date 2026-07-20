@@ -34,14 +34,14 @@ namespace tests_libOTe
                 u32 p = perm2k.feistelBijection(i);
                 if (outputs.count(p) > 0)
                 {
-                    throw std::runtime_error("Feistel2KPerm failed bijection test: duplicate output found");
+                    throw osuCrypto::maybe_runtime_error("Feistel2KPerm failed bijection test: duplicate output found");
                 }
                 outputs.insert(p);
                 
                 // Ensure all outputs are within range
                 if (p >= size)
                 {
-                    throw std::runtime_error("Feistel2KPerm failed range test: output exceeds domain");
+                    throw osuCrypto::maybe_runtime_error("Feistel2KPerm failed range test: output exceeds domain");
                 }
             }
             timer.setTimePoint("bijection2k");
@@ -49,7 +49,7 @@ namespace tests_libOTe
             // Make sure all values in the domain are covered
             if (outputs.size() != size)
             {
-                throw std::runtime_error("Feistel2KPerm failed coverage test: not all outputs covered");
+                throw osuCrypto::maybe_runtime_error("Feistel2KPerm failed coverage test: not all outputs covered");
             }
             
             //std::cout << "Feistel2KPerm size " << size << " passed bijection test" << std::endl;
@@ -77,14 +77,14 @@ namespace tests_libOTe
                 u32 p = *iter;
                 if (outputs.count(p) > 0)
                 {
-                    throw std::runtime_error("FeistelPerm failed bijection test: duplicate output found");
+                    throw osuCrypto::maybe_runtime_error("FeistelPerm failed bijection test: duplicate output found");
                 }
                 outputs.insert(p);
                 
                 // Ensure all outputs are within range
                 if (p >= size)
                 {
-                    throw std::runtime_error("FeistelPerm failed range test: output exceeds domain");
+                    throw osuCrypto::maybe_runtime_error("FeistelPerm failed range test: output exceeds domain");
                 }
                 
                 ++iter;
@@ -94,7 +94,7 @@ namespace tests_libOTe
             // Make sure all values in the domain are covered
             if (outputs.size() != size)
             {
-                throw std::runtime_error("FeistelPerm failed coverage test: not all outputs covered");
+                throw osuCrypto::maybe_runtime_error("FeistelPerm failed coverage test: not all outputs covered");
             }
             
             //std::cout << "FeistelPerm size " << size << " passed bijection test" << std::endl;
@@ -135,7 +135,7 @@ namespace tests_libOTe
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("Feistel2KPerm data permutation failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("Feistel2KPerm data permutation failed: not all elements preserved");
                 }
                 
                 //std::cout << "Feistel2KPerm size " << size << " passed data permutation test" << std::endl;
@@ -165,7 +165,7 @@ namespace tests_libOTe
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("Feistel2KPerm iterator interface failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("Feistel2KPerm iterator interface failed: not all elements preserved");
                 }
                 
                 //std::cout << "Feistel2KPerm size " << size << " passed iterator interface test" << std::endl;
@@ -199,13 +199,13 @@ namespace tests_libOTe
                 {
                    if( uniqueValues.insert(output[i]).second == false )
                    {
-                       throw std::runtime_error("FeistelPerm data permutation failed: duplicate element found");
+                       throw osuCrypto::maybe_runtime_error("FeistelPerm data permutation failed: duplicate element found");
 				   }
                 }
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("FeistelPerm data permutation failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("FeistelPerm data permutation failed: not all elements preserved");
                 }
                 
                 //std::cout << "FeistelPerm size " << size << " passed data permutation test" << std::endl;
@@ -235,7 +235,7 @@ namespace tests_libOTe
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("FeistelPerm iterator interface failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("FeistelPerm iterator interface failed: not all elements preserved");
                 }
                 
                 //std::cout << "FeistelPerm size " << size << " passed iterator interface test" << std::endl;
@@ -296,7 +296,7 @@ namespace tests_libOTe
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("Feistel2KPerm chunk interface failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("Feistel2KPerm chunk interface failed: not all elements preserved");
                 }
                 
                 //std::cout << "Feistel2KPerm size " << size << " passed chunk interface test" << std::endl;
@@ -354,7 +354,7 @@ namespace tests_libOTe
                 
                 if (uniqueValues.size() != size)
                 {
-                    throw std::runtime_error("FeistelPerm chunk interface failed: not all elements preserved");
+                    throw osuCrypto::maybe_runtime_error("FeistelPerm chunk interface failed: not all elements preserved");
                 }
                 
                 //std::cout << "FeistelPerm size " << size << " passed chunk interface test" << std::endl;

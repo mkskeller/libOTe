@@ -16,7 +16,7 @@ namespace osuCrypto
 	{
 		MACORO_TRY{
 		if (u64(baseRecvOts.size()) != u64(mGens.size()))
-			throw std::runtime_error("rt error at " LOCATION);
+			throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
 		auto delta = BitVector(getBaseOTCount());
 		delta.randomize(prng);
@@ -43,7 +43,7 @@ namespace osuCrypto
 	{
 
 		if (u64(baseRecvOts.size()) != u64(mGens.size()))
-			throw std::runtime_error("rt error at " LOCATION);
+			throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
 		for (u64 i = 0; i < mGens.size(); i++)
 		{
@@ -57,7 +57,7 @@ namespace osuCrypto
 	{
 		MACORO_TRY{
 		if (mInputByteCount == 0)
-			throw std::runtime_error("configure must be called first" LOCATION);
+			throw osuCrypto::maybe_runtime_error("configure must be called first" LOCATION);
 
 		if (hasBaseOts() == false)
 			co_await genBaseOts(prng, chl);
@@ -220,13 +220,13 @@ namespace osuCrypto
 	{
 #ifndef NDEBUG
 		if (mInputByteCount == 0)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 		if (eq(mT0[otIdx][0], ZeroBlock))
-			throw std::runtime_error("uninitialized OT extension");
+			throw osuCrypto::maybe_runtime_error("uninitialized OT extension");
 
 		if (mEncodeFlags[otIdx])
-			throw std::runtime_error("encode can only be called once per otIdx");
+			throw osuCrypto::maybe_runtime_error("encode can only be called once per otIdx");
 
 		mEncodeFlags[otIdx] = 1;
 #endif // !NDEBUG
@@ -294,7 +294,7 @@ namespace osuCrypto
 
 #ifndef NDEBUG
 		if (eq(mT0[otIdx][0], ZeroBlock))
-			throw std::runtime_error("uninitialized OT extension");
+			throw osuCrypto::maybe_runtime_error("uninitialized OT extension");
 
 		mEncodeFlags[otIdx] = 1;
 #endif // !NDEBUG
@@ -328,7 +328,7 @@ namespace osuCrypto
 		if (mGens.size())
 			return mGens.size();
 		else
-			throw std::runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
+			throw osuCrypto::maybe_runtime_error("must call configure(...) before getBaseOTCount() " LOCATION);
 	}
 
 	void OosNcoOtReceiver::configure(
@@ -343,7 +343,7 @@ namespace osuCrypto
 			mCode.load(bch511_binary, sizeof(bch511_binary));
 		}
 		else
-			throw std::runtime_error("76 bits is currently the max. larger inputs can be supported on request.... " LOCATION);
+			throw osuCrypto::maybe_runtime_error("76 bits is currently the max. larger inputs can be supported on request.... " LOCATION);
 
 
 		mInputByteCount = (inputBitCount + 7) / 8;
@@ -375,7 +375,7 @@ namespace osuCrypto
 		for (u64 i = mCorrectionIdx; i < sendCount + mCorrectionIdx; ++i)
 		{
 			if (mEncodeFlags[i] == 0)
-				throw std::runtime_error("an item was not encoded. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("an item was not encoded. " LOCATION);
 		}
 
 #endif
@@ -421,7 +421,7 @@ namespace osuCrypto
 		{
 			if (mEncodeFlags[i] == 0)
 			{
-				throw std::runtime_error("All messages must be encoded before check is called. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("All messages must be encoded before check is called. " LOCATION);
 			}
 		}
 #endif
@@ -661,7 +661,7 @@ namespace osuCrypto
 				}
 
 				if (mW.stride() != 1)
-					throw std::runtime_error("generalize this code vvvvvv " LOCATION);
+					throw osuCrypto::maybe_runtime_error("generalize this code vvvvvv " LOCATION);
 
 				xIter = byteView;
 				for (u64 i = 0; i < stopIdx; ++i, ++mWIter)

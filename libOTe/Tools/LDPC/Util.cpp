@@ -76,7 +76,7 @@ namespace osuCrypto
 
         return dist;
 #else
-        throw std::runtime_error("also 994 not enabled. " LOCATION);
+        throw osuCrypto::maybe_runtime_error("also 994 not enabled. " LOCATION);
 #endif
     }
 

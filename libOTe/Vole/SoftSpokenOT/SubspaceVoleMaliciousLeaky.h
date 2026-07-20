@@ -537,7 +537,7 @@ namespace osuCrypto
 
 				Receiver::mVole.sharedFunctionXorGF(finalHashU, finalHashW.data(), gfMods[fieldBits]);
 				if (!std::equal(finalHashW.data(), finalHashW.data() + numVoles * fieldBits, finalHashV))
-					throw std::runtime_error("Failed subspace VOLE consistency check");;
+					throw osuCrypto::maybe_runtime_error("Failed subspace VOLE consistency check");;
 			}
 
 		}

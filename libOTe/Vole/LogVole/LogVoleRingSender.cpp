@@ -198,7 +198,7 @@ namespace osuCrypto::LogVole
             RecursiveMode mode{};
             if (!recursiveMode(params, mode))
             {
-                throw std::runtime_error("LogVole sender has invalid recursive offline parameters");
+                throw osuCrypto::maybe_runtime_error("LogVole sender has invalid recursive offline parameters");
             }
 
             bool childHasReusableState = hasReusableState;
@@ -206,14 +206,14 @@ namespace osuCrypto::LogVole
             {
                 if (message.mHasShrinkExpandMessage)
                 {
-                    throw std::runtime_error("LogVole sender has unexpected reusable offline message");
+                    throw osuCrypto::maybe_runtime_error("LogVole sender has unexpected reusable offline message");
                 }
             }
             else
             {
                 if (!message.mHasShrinkExpandMessage)
                 {
-                    throw std::runtime_error("LogVole sender missing shrink/expand offline message");
+                    throw osuCrypto::maybe_runtime_error("LogVole sender missing shrink/expand offline message");
                 }
 
                 auto shrinkExpandSock = sock.fork();
@@ -233,13 +233,13 @@ namespace osuCrypto::LogVole
 
             if (!message.mNextLevel)
             {
-                throw std::runtime_error("LogVole sender missing recursive offline message");
+                throw osuCrypto::maybe_runtime_error("LogVole sender missing recursive offline message");
             }
 
             Params child{};
             if (!childParams(params, child))
             {
-                throw std::runtime_error("LogVole sender could not derive child parameters");
+                throw osuCrypto::maybe_runtime_error("LogVole sender could not derive child parameters");
             }
 
             auto childSock = sock.fork();
@@ -256,7 +256,7 @@ namespace osuCrypto::LogVole
             RecursiveMode mode{};
             if (!recursiveMode(state.mParams, mode))
             {
-                throw std::runtime_error("LogVole sender has invalid recursive online parameters");
+                throw osuCrypto::maybe_runtime_error("LogVole sender has invalid recursive online parameters");
             }
 
             if (mode == RecursiveMode::Root)
@@ -270,13 +270,13 @@ namespace osuCrypto::LogVole
                     RootDigestMessage digest{};
                     if (!decode(digestPayload, digest))
                     {
-                        throw std::runtime_error("LogVole sender could not decode root digest");
+                        throw osuCrypto::maybe_runtime_error("LogVole sender could not decode root digest");
                     }
 
                     RootResponseMessage response{};
                     if (!prepareRootResponseSender(state, digest, prng, response, &precomputeRoot))
                     {
-                        throw std::runtime_error("LogVole sender could not prepare root response");
+                        throw osuCrypto::maybe_runtime_error("LogVole sender could not prepare root response");
                     }
 
                     responsePayload = encode(response);
@@ -289,14 +289,14 @@ namespace osuCrypto::LogVole
 
             if (!state.mNextLevelState)
             {
-                throw std::runtime_error("LogVole sender missing recursive child state");
+                throw osuCrypto::maybe_runtime_error("LogVole sender missing recursive child state");
             }
 
             auto childSock = sock.fork();
             co_await senderOnlineService(*state.mNextLevelState, precomputeRoot, childSock, prng, comm);
             if (!state.mPrecomputedTbk)
             {
-                throw std::runtime_error("LogVole sender could not prepare recursive online cache");
+                throw osuCrypto::maybe_runtime_error("LogVole sender could not prepare recursive online cache");
             }
         }
     }
@@ -310,7 +310,7 @@ namespace osuCrypto::LogVole
         ShrinkExpandOfflineMessage message{};
         if (!prepareShrinkExpandSenderOffline(input, prng, message, state))
         {
-            throw std::runtime_error("LogVole sender could not prepare shrink/expand offline message");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not prepare shrink/expand offline message");
         }
 
         co_await sendFrame(sock, encode(message));
@@ -325,7 +325,7 @@ namespace osuCrypto::LogVole
         SenderOfflineOutput output{};
         if (!prepareSenderOffline(input, prng, output))
         {
-            throw std::runtime_error("LogVole sender could not prepare recursive offline state");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not prepare recursive offline state");
         }
 
         co_await sendOfflineMessage(input.mParams, output.mMessage, sock, true, false);
@@ -342,13 +342,13 @@ namespace osuCrypto::LogVole
         KeyDeriveRequest request{};
         if (!decode(requestPayload, request))
         {
-            throw std::runtime_error("LogVole sender could not decode key-derive request");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not decode key-derive request");
         }
 
         KeyDeriveResponse response{};
         if (!processKeyDeriveRequest(input, request, response, output))
         {
-            throw std::runtime_error("LogVole sender rejected key-derive request");
+            throw osuCrypto::maybe_runtime_error("LogVole sender rejected key-derive request");
         }
 
         co_await sendFrame(sock, encode(response));
@@ -398,7 +398,7 @@ namespace osuCrypto::LogVole
         }
         if (!state.mPrecomputedTbk)
         {
-            throw std::runtime_error("LogVole sender could not prepare recursive online cache");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not prepare recursive online cache");
         }
 
         SenderOnlineOutput next{};
@@ -422,19 +422,19 @@ namespace osuCrypto::LogVole
         PolyMessage digestMessage{};
         if (!decode(digestPayload, digestMessage))
         {
-            throw std::runtime_error("LogVole sender received malformed shrink digest");
+            throw osuCrypto::maybe_runtime_error("LogVole sender received malformed shrink digest");
         }
 
         RnsPoly digest{};
         if (!readPolyMessage(state.mParams.mRing, digestMessage, digest))
         {
-            throw std::runtime_error("LogVole sender rejected shrink digest metadata");
+            throw osuCrypto::maybe_runtime_error("LogVole sender rejected shrink digest metadata");
         }
 
         RingNttContext ctx{};
         if (!makeRingNttContext(state.mParams.mRing, ctx))
         {
-            throw std::runtime_error("LogVole sender could not build ring context");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not build ring context");
         }
 
         RnsPoly skX{};
@@ -463,7 +463,7 @@ namespace osuCrypto::LogVole
         }
         if (!skxOk)
         {
-            throw std::runtime_error("LogVole sender could not derive shrink/expand key");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not derive shrink/expand key");
         }
 
         co_await sendFrame(sock, encode(makePolyMessage(state.mParams.mRing, skX)));
@@ -472,7 +472,7 @@ namespace osuCrypto::LogVole
         expandInput.mDigest = std::move(digest);
         if (!shrinkExpandExpandSender(state, expandInput, output))
         {
-            throw std::runtime_error("LogVole sender could not expand");
+            throw osuCrypto::maybe_runtime_error("LogVole sender could not expand");
         }
     }
 }

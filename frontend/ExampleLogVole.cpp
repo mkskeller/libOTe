@@ -39,7 +39,7 @@ namespace osuCrypto
         {
             const auto plaintextModulusBits = cmd.getOr("p", 55);
             if (plaintextModulusBits < 2 || plaintextModulusBits > 61)
-                throw std::runtime_error("LogVole example requires -p in [2, 61]");
+                throw osuCrypto::maybe_runtime_error("LogVole example requires -p in [2, 61]");
             return static_cast<u32>(plaintextModulusBits);
         }
 
@@ -61,14 +61,14 @@ namespace osuCrypto
             u64 modulus)
         {
             if (keys.size() != x.size() || macs.size() != x.size())
-                throw std::runtime_error("LogVole example returned an unexpected output size");
+                throw osuCrypto::maybe_runtime_error("LogVole example returned an unexpected output size");
 
             const seal::Modulus mod(modulus);
             for (u64 i = 0; i < x.size(); ++i)
             {
                 const auto expected = LogVole::mulAddMod(x[i], delta, keys[i], mod);
                 if (macs[i] != expected)
-                    throw std::runtime_error("LogVole example relation check failed");
+                    throw osuCrypto::maybe_runtime_error("LogVole example relation check failed");
             }
         }
 
@@ -80,7 +80,7 @@ namespace osuCrypto
                 numVole = 16;
 
             if (numVole < 0)
-                throw std::runtime_error("LogVole example requires non-negative -n");
+                throw osuCrypto::maybe_runtime_error("LogVole example requires non-negative -n");
 
             LogVoleSender sender{};
             LogVoleReceiver receiver{};
@@ -92,7 +92,7 @@ namespace osuCrypto
             const auto w = static_cast<u64>(numVole);
             const auto delta = static_cast<u64>(cmd.getOr("delta", 7)) % modulus;
             if (delta == 0)
-                throw std::runtime_error("LogVole example requires nonzero delta modulo p");
+                throw osuCrypto::maybe_runtime_error("LogVole example requires nonzero delta modulo p");
 
             auto x = makeLogVoleExampleX(w, modulus);
             auto offlineSockets = coproto::LocalAsyncSocket::makePair();
@@ -146,7 +146,7 @@ namespace osuCrypto
             numVole = 16;
 
         if (numVole < 0)
-            throw std::runtime_error("LogVole example requires non-negative -n");
+            throw osuCrypto::maybe_runtime_error("LogVole example requires non-negative -n");
 
         const auto plaintextModulusBits = logVoleExamplePlaintextModulusBits(cmd);
         const auto w = static_cast<u64>(numVole);
@@ -162,7 +162,7 @@ namespace osuCrypto
         const u64 modulus = role == Role::Sender ? sender.modulus() : receiver.modulus();
         const auto delta = static_cast<u64>(cmd.getOr("delta", 7)) % modulus;
         if (delta == 0)
-            throw std::runtime_error("LogVole example requires nonzero delta modulo p");
+            throw osuCrypto::maybe_runtime_error("LogVole example requires nonzero delta modulo p");
 
         auto chl = cp::asioConnect(ip, role == Role::Sender);
         cp::sync_wait(sync(chl, role));

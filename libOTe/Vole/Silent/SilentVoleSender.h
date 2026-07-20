@@ -310,7 +310,7 @@ namespace osuCrypto
 		 */
 		PprfSender<F, Ctx>& gen() {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> PprfSender<F, Ctx>&{ return v; }, mGenVar);
 			}
 		
@@ -321,7 +321,7 @@ namespace osuCrypto
 		 */
 		const PprfSender<F, Ctx>& gen() const {
 			if (isConfigured() == false)
-				throw std::runtime_error("configure(...) must be called first.");
+				throw osuCrypto::maybe_runtime_error("configure(...) must be called first.");
 			return std::visit([](auto& v) -> const PprfSender<F, Ctx>&{ return v; }, mGenVar);
 		}
 	};
@@ -351,7 +351,7 @@ namespace osuCrypto
 	VoleBaseCount SilentVoleSender<F, G, Ctx>::baseCount() const
 	{
 		if (isConfigured() == false)
-			throw std::runtime_error("configure must be called first");
+			throw osuCrypto::maybe_runtime_error("configure must be called first");
 
 		auto ot = gen().baseOtCount();
 		auto vole = mNumPartitions + 1 * (mSecurityType == SilentSecType::Malicious);
@@ -388,7 +388,7 @@ namespace osuCrypto
 
 			if (isConfigured() == false)
 			{
-				throw std::runtime_error("configure must be called first");
+				throw osuCrypto::maybe_runtime_error("configure must be called first");
 			}
 
 			auto count = baseCount();
@@ -444,7 +444,7 @@ namespace osuCrypto
 						co_await nv.send(delta, b, prng2, *mOtExtRecver, chl2, mCtx);
 				}
 #else
-				throw std::runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken ." LOCATION);
+				throw osuCrypto::maybe_runtime_error("ENABLE_SOFTSPOKEN_OT = false, must enable soft spoken ." LOCATION);
 #endif
 			}
 			else
@@ -470,7 +470,7 @@ namespace osuCrypto
 
 			setTimePoint("SilentVoleSender.genSilent.done");
 #else
-			throw std::runtime_error("LIBOTE_HAS_BASE_OT = false, must enable relic, sodium or simplest ot asm." LOCATION);
+			throw osuCrypto::maybe_runtime_error("LIBOTE_HAS_BASE_OT = false, must enable relic, sodium or simplest ot asm." LOCATION);
 			co_return;
 #endif
 
@@ -694,7 +694,7 @@ namespace osuCrypto
 				if constexpr (MaliciousSupported)
 					hash = ferretMalCheck(X);
 				else
-					throw std::runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("malicious is currently only supported for GF128 block. " LOCATION);
 
 				// Send our hash to the receiver
 				co_await chl.send(std::move(hash));
@@ -749,9 +749,9 @@ namespace osuCrypto
 					encoder.dualEncode(mB);
 				}
 				else
-					throw std::runtime_error("QuasiCyclic is only supported for GF128, i.e. block. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("QuasiCyclic is only supported for GF128, i.e. block. " LOCATION);
 #else
-				throw std::runtime_error("QuasiCyclic requires ENABLE_BITPOLYMUL = true. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("QuasiCyclic requires ENABLE_BITPOLYMUL = true. " LOCATION);
 #endif
 				break;
 			}
@@ -765,7 +765,7 @@ namespace osuCrypto
 				break;
 			}
 			default:
-				throw std::runtime_error("Code is not supported. " LOCATION);
+				throw osuCrypto::maybe_runtime_error("Code is not supported. " LOCATION);
 				break;
 			}
 
