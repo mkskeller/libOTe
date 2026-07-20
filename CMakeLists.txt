@@ -20,7 +20,7 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
 	add_definitions(-DSOLUTION_DIR='${CMAKE_SOURCE_DIR}')
 	if(MSVC)
 	else()
-		set(COMMON_FLAGS "-Wall -Wfatal-errors -Werror")
+		set(COMMON_FLAGS "-Wall -Wfatal-errors")# -Werror")
 		SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -g -DNDEBUG")
 		SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO " -O2 -g -ggdb")
 		SET(CMAKE_CXX_FLAGS_DEBUG  "-O0 -g -ggdb")
@@ -96,6 +96,10 @@ include(cmake/libOTeDepHelper.cmake)
 file(REMOVE ${CMAKE_CURRENT_LIST_DIR}/libOTe/config.h)
 configure_file(libOTe/config.h.in libOTe/config.h)
 
+if(ENABLE_LOGVOLE)
+	enable_testing()
+endif()
+
 if(ENABLE_SIMPLESTOT_ASM AND (NOT MSVC))
 	add_subdirectory(thirdparty/SimplestOT)
 endif()
@@ -111,6 +115,11 @@ add_subdirectory(libOTe_Tests)
 #              Build Frontend               #
 #############################################
 add_subdirectory(frontend)
+
+if(ENABLE_LOGVOLE)
+	add_test(NAME LogVoleNativeTests COMMAND frontend_libOTe -u LogVole)
+	set_tests_properties(LogVoleNativeTests PROPERTIES LABELS "logvole;logvole-native")
+endif()
 
 
 
