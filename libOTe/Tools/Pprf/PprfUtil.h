@@ -327,7 +327,7 @@ namespace osuCrypto
 
                 levels.back() = buff.subspan(0, domainSize);
                 buff = buff.subspan(domainSize);
-                for (u64 i = levels.size() - 2, j = 0ull; i < levels.size(); --i, ++j)
+                for (u64 i = levels.size() - 2; i < levels.size(); --i)
                 {
                     // each level will be half the size of the next level.
                     auto width = divCeil(domainSize, 1ull << (depth - i));
