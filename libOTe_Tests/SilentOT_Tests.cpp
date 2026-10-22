@@ -389,7 +389,7 @@ void SilentOtTriple_Audit_test(const oc::CLP&)
     if (triple.hasBaseOts())
         throw UnitTestFail("Default SilentOtTriple reported available base OTs");
 
-	expectRejected([&] { triple.init(0, 0); });
+    expectRejected([&] { triple.init(0, 0); });
 	expectRejected([&] { triple.init(2, 128); });
 	expectRejected([&] {
 		triple.init(0, 128, SilentSecType::SemiHonest,
@@ -1385,7 +1385,7 @@ void OtExt_Silent_AuditState_Test(const oc::CLP& cmd)
     if (!threw || invalidReceiver.hasBaseCors())
         throw RTE_LOC;
 
-	SilentOtExtReceiver mismatchedReceiver;
+    SilentOtExtReceiver mismatchedReceiver;
 	BitVector mismatchedChoices(2);
 	AlignedUnVector<block> mismatchedMessages(1);
 	cp::BufferingSocket closedSocket;

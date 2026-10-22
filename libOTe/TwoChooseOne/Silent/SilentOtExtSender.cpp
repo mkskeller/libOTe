@@ -115,8 +115,8 @@ namespace osuCrypto
 		if (isConfigured() == false)
 			throw std::runtime_error("configure must be called first");
 
-#if defined(ENABLE_SOFTSPOKEN_OT) && defined(LIBOTE_HAS_BASE_OT)
-
+		// If we have IKNP base OTs, use them
+		// to extend to get the silent base OTs.
 #ifdef ENABLE_SOFTSPOKEN_OT
 		if (useOtExtension)
 		{
@@ -127,6 +127,7 @@ namespace osuCrypto
 			// Initialize OT extension if needed
 			if (!mOtExtSender)
 			{
+#ifdef LIBOTE_HAS_BASE_OT
 				mOtExtSender.emplace();
 				// false -> no hashing, delta OTs / VOLEs
 				mOtExtSender->init(2, false);
@@ -135,6 +136,9 @@ namespace osuCrypto
 				std::vector<block> baseMsg(baseCount);
 				co_await base.receive(choice, baseMsg, prng, chl);
 				mOtExtSender->setBaseOts(baseMsg, choice);
+#else
+				std::terminate();
+#endif
 			}
 
 			// Check if the existing delta matches what we need
@@ -157,6 +161,7 @@ namespace osuCrypto
 		}
 		else
 #endif
+#ifdef LIBOTE_HAS_BASE_OT
 		{
 			// Use base OT protocol directly (more expensive but fewer rounds)
 			auto base = DefaultBaseOT{};

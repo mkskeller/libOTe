@@ -106,7 +106,7 @@ namespace osuCrypto
 			VecF& output,
 			PprfOutputFormat oFormat,
 			bool programPuncturedPoint,
-			u64 numThreads,
+			u64,
 			CoeffCtx ctx = {}) override 
 		{
 			auto consumeBaseOts = false;
@@ -397,14 +397,14 @@ namespace osuCrypto
 			auto outIter = leafLevel.data() + leafOffset;
 
 			// for the leaf nodes we need to hash both children.
-			for (u64 parentIdx = 0, childIdx = 0; parentIdx < width; ++parentIdx)
+			for (u64 parentIdx = 0; parentIdx < width; ++parentIdx)
 			{
 				// The value of the parent.
 				auto& parent = level0.data()[parentIdx];
 
 				// The bit that indicates if we are on the left child (0)
 				// or on the right child (1).
-				for (u64 keep = 0; keep < 2; ++keep, ++childIdx)
+				for (u64 keep = 0; keep < 2; ++keep)
 				{
 					// The child that we will write in this iteration.
 
@@ -736,7 +736,7 @@ namespace osuCrypto
 			VecF& output,
 			PprfOutputFormat oFormat,
 			bool programPuncturedPoint,
-			u64 numThreads,
+			u64,
 			CoeffCtx ctx = {}) override
 		{
 			auto consumeBaseOts = false;
@@ -1070,12 +1070,12 @@ namespace osuCrypto
 
 				auto outIter = leafLevel.data() + outputOffset;
 				// for leaf nodes both children should be hashed.
-				for (u64 parentIdx = 0, childIdx = 0; parentIdx < width; ++parentIdx)
+				for (u64 parentIdx = 0; parentIdx < width; ++parentIdx)
 				{
 					// The value of the parent.
 					auto parent = level0.data()[parentIdx];
 
-					for (u64 keep = 0; keep < 2; ++keep, ++childIdx)
+					for (u64 keep = 0; keep < 2; ++keep)
 					{
 						if constexpr (std::is_same_v<F, block> && (
 							std::is_same_v<CoeffCtx, CoeffCtxGF2> ||

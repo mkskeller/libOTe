@@ -3,6 +3,7 @@
 #include <cryptoTools/Common/Defines.h>
 #include <cryptoTools/Common/MatrixView.h>
 
+#ifdef __x86_64__
 #ifdef OC_ENABLE_SSE2
 #ifndef _MSC_VER
 #include <x86intrin.h>
@@ -11,6 +12,7 @@
 #endif
 #ifdef OC_ENABLE_AVX2
 #include <immintrin.h>
+#endif
 #endif
 
 #include <cryptoTools/Common/BitVector.h>

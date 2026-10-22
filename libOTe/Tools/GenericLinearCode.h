@@ -19,7 +19,7 @@ namespace osuCrypto
 	{
 	protected:
 		// Force correct inheritance (https://stackoverflow.com/a/4418038/4071916)
-		GenericLinearCode(Derived* this_) {}
+		GenericLinearCode(Derived*) {}
 
 	public:
 		u64 dimension() const { return static_cast<const Derived*>(this)->dimension(); }

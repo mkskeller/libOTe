@@ -1001,6 +1001,8 @@ namespace tests_libOTe
                 throw UnitTestFail(LOCATION);
         };
 
+        (void) expectThrow;
+
 #if defined(ENABLE_KOS)
         {
             auto sockets = cp::LocalAsyncSocket::makePair();

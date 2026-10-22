@@ -20,8 +20,8 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
 	add_definitions(-DSOLUTION_DIR='${CMAKE_SOURCE_DIR}')
 	if(MSVC)
 	else()
-		set(COMMON_FLAGS "-Wall -Wfatal-errors")
-		SET(CMAKE_CXX_FLAGS_RELEASE "-O3  -DNDEBUG")
+		set(COMMON_FLAGS "-Wall -Wfatal-errors -Werror -Wno-array-bounds -Wno-maybe-uninitialized -Wno-unknown-warning-option -Wno-stringop-overflow")
+		SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -g -DNDEBUG")
 		SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO " -O2 -g -ggdb")
 		SET(CMAKE_CXX_FLAGS_DEBUG  "-O0 -g -ggdb")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
@@ -52,6 +52,7 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
 
 endif()
 
+include_directories(cryptoTools/thirdparty)
 
 if(DEFINED LIBOTE_CPP_VER)
     message("warning: setting LIBOTE_STD_VER as LIBOTE_CPP_VER=${LIBOTE_CPP_VER}")

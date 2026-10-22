@@ -394,6 +394,7 @@ namespace osuCrypto
 		u64 dpeth = cmd.getOr("depth", 3);
 
 		auto blk = cmd.isSet("blk");
+		(void) blk;
 
 		// verbose flag.
 		bool v = cmd.isSet("v");

@@ -194,13 +194,13 @@ namespace osuCrypto
 		AlignedUnVector<block> msg(choice.size());
 		std::vector<block> baseA(count.mBaseVoleCount);
 
-#if defined(LIBOTE_HAS_BASE_OT)
 #if defined(ENABLE_SOFTSPOKEN_OT) 
 		if (useOtExtension)
 		{
 			// Initialize OT extension if needed
 			if (!mOtExtRecver)
 			{
+#ifdef LIBOTE_HAS_BASE_OT
 				mOtExtRecver.emplace();
 				// false -> no hashing, delta OTs / VOLEs
 				mOtExtRecver->init(2, false);
@@ -209,6 +209,9 @@ namespace osuCrypto
 				std::vector<std::array<block, 2>> baseMsg(baseCount);
 				co_await base.send(baseMsg, prng, chl);
 				mOtExtRecver->setBaseOts(baseMsg);
+#else
+				std::terminate();
+#endif
 			}
 
 			// Use OT extension to generate the base OTs
@@ -224,6 +227,7 @@ namespace osuCrypto
 		}
 		else
 #endif
+#ifdef LIBOTE_HAS_BASE_OT
 		{
 			// Use base OT protocol directly (more expensive but fewer rounds)
 			auto base = DefaultBaseOT{};

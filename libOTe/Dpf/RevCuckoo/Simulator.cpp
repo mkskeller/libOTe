@@ -919,6 +919,9 @@ namespace osuCrypto
 			tries, &counts, setSize, h, e, parSize, 
 			numThrds, rand, seed](u64 tIdx)
 			{
+		        (void) e;
+		        (void) rand;
+
 				PRNG prng(block(seed, tIdx));
 
 				std::vector<block> hashs(setSize);

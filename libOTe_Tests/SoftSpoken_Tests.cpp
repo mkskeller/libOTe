@@ -379,7 +379,7 @@ namespace tests_libOTe
             if (w[i] != ZeroBlock)
                 throw UnitTestFail("SmallField VOLE tail consumed padded input");
 
-		SmallFieldVoleSender failedSender;
+        SmallFieldVoleSender failedSender;
 		failedSender.init(1, 1, false);
 		auto failedSenderSockets = cp::LocalAsyncSocket::makePair();
 		expectRejected([&] {

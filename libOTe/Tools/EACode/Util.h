@@ -142,7 +142,7 @@ namespace osuCrypto
                 return libdivide::libdivide_u64_do_vec256(x, divider);
             }
 #else
-            using block256 = std::array<block, 2>;
+            using block256 = std::array<u64, 4>;
 
             static inline block256 load256(const u64* p)
             {
