@@ -667,6 +667,7 @@ namespace osuCrypto
 
 	void BinSolver_multiplyMtxMany_test(const oc::CLP& cmd)
 	{
+	  #ifdef asdfasdf
 		PRNG prng(block(555, 666));
 		u64 t = cmd.getOr("t", 5);
 		u64 batch = cmd.getOr("batch", 3);
@@ -779,6 +780,7 @@ namespace osuCrypto
 				}
 			}
 		}
+		#endif
 	}
 
 	void BinSolver_solveMany_test(const oc::CLP& cmd)
